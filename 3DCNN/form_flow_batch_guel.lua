@@ -130,8 +130,8 @@ function get_flow_batch()
                         im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
                         im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
 
-                        im[{{1}, {}, {}}]:mul(89/origSize[3]) -- ATTENTION! NOT sc_w
-                        im[{{2}, {}, {}}]:mul(67/origSize[2])
+--                        im[{{1}, {}, {}}]:mul(89/origSize[3])
+--                        im[{{2}, {}, {}}]:mul(67/origSize[2])
                     end
 
                     ims[{{1}, {f + 1}, {}, {}}] = im[{{1}, {}, {}}] - im[{{1}, {}, {}}]:mean()
