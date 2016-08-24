@@ -112,7 +112,7 @@ if file then
 
                 im = image.scale(im, 89, 67)
 
-                local mm = minmaxes[frame_ind + f]
+                local mm = minmaxes[start_ind + f]
                 im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
                 im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
 
