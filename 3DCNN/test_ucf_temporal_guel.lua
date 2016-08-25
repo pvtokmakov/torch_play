@@ -120,8 +120,7 @@ if file then
 
                 batch_ims = cropImage(im, batch_ims, f + 1)
             end
-
-            batch_ims = batch_ims:float() * 255
+            
             batch_ims = batch_ims:cuda()
 
             local prediction = model:forward(batch_ims)
