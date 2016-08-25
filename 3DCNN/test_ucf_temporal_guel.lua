@@ -108,13 +108,15 @@ if file then
         for i = 1, num_steps do
             local batch_ims = torch.Tensor(10, 2, 60, 58, 58)
             for f = 0, 59 do
-                local im = torch.cat(image.decompressJPG(video['x'][start_ind + f]:byte()), image.decompressJPG(video['y'][start_ind + f]:byte()), 1)
+                if start_ind + f < #video['x'] then
+                    im = torch.cat(image.decompressJPG(video['x'][start_ind + f]:byte()), image.decompressJPG(video['y'][start_ind + f]:byte()), 1)
 
-                im = image.scale(im, 89, 67)
+                    im = image.scale(im, 89, 67)
 
-                local mm = minmaxes[start_ind + f]
-                im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
-                im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
+                    local mm = minmaxes[start_ind + f]
+                    im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
+                    im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
+                end
 
                 batch_ims = cropImage(im, batch_ims, f + 1)
             end
