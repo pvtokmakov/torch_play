@@ -116,11 +116,14 @@ if file then
                     local mm = minmaxes[start_ind + f]
                     im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
                     im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
+
+                    im[{{1}, {}, {}}] = im[{{1}, {}, {}}] - im[{{1}, {}, {}}]:mean()
+                    im[{{2}, {}, {}}] = im[{{2}, {}, {}}] - im[{{2}, {}, {}}]:mean()
                 end
 
                 batch_ims = cropImage(im, batch_ims, f + 1)
             end
-            
+
             batch_ims = batch_ims:cuda()
 
             local prediction = model:forward(batch_ims)
