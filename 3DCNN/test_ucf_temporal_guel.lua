@@ -138,6 +138,8 @@ if file then
 
         local confidences, indices = torch.sort(meanPreds, true)
 
+        print('Predicted: ' .. indices[1] .. ', gt: ' .. catInd)
+
         confusion:add(indices[1], catInd)
     end
 end
