@@ -16,28 +16,28 @@ local function cropImage(im, batch, frame_ind)
     local out_dim = 227
 
     local croped_im = image.crop(im, 0, 0, out_dim, out_dim)
-    batch[{{1}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 1}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
-    batch[{{2}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 2}, {}, {}, {}}] = croped_im
     croped_im = image.crop(im, size[3] - out_dim, 0, size[3], out_dim)
-    batch[{{3}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 3}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
-    batch[{{4}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 4}, {}, {}, {}}] = croped_im
     croped_im = image.crop(im, 0, size[2] - out_dim, out_dim, size[2])
-    batch[{{5}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 5}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
-    batch[{{6}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 6}, {}, {}, {}}] = croped_im
     croped_im = image.crop(im, size[3] - out_dim, size[2] - out_dim, size[3], size[2])
-    batch[{{7}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 7}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
-    batch[{{8}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 8}, {}, {}, {}}] = croped_im
 
     local mid_x = math.floor(size[3] / 2)
     local mid_y = math.floor(size[2] / 2)
     croped_im = image.crop(im, mid_x - out_dim / 2, mid_y - out_dim / 2, mid_x + out_dim / 2, mid_y + out_dim / 2)
-    batch[{{9}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 9}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
-    batch[{{10}, {}, {frame_ind}, {}, {}}] = croped_im
+    batch[{{frame_ind + 10}, {}, {}, {}}] = croped_im
 
     return batch
 end
@@ -115,7 +115,7 @@ if file then
                 if start_ind + f < #video['x'] then
                     im[{{1}, {}, {}}] = image.decompressJPG(video['x'][start_ind + f]:byte())
                     im[{{2}, {}, {}}] = image.decompressJPG(video['y'][start_ind + f]:byte())
-                    
+
                     local mm = minmaxes[start_ind + f]
                     im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
                     im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
@@ -126,7 +126,7 @@ if file then
                     im[{{3}, {}, {}}] = im[{{3}, {}, {}}] - im[{{3}, {}, {}}]:mean()
                 end
 
-                batch_ims = cropImage(im, batch_ims, f + 1)
+                batch_ims = cropImage(im, batch_ims, f * 10)
             end
 
             batch_ims = batch_ims:cuda()
