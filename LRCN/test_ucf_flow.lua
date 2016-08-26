@@ -113,12 +113,13 @@ if file then
             im = torch.Tensor(3, sz[2], sz[3])
             for f = 0, 15 do
                 if start_ind + f < #video['x'] then
-                    im = torch.cat(image.decompressJPG(video['x'][start_ind + f]:byte()), image.decompressJPG(video['y'][start_ind + f]:byte()), 1)
-
+                    im[{{1}, {}, {}}] = image.decompressJPG(video['x'][start_ind + f]:byte())
+                    im[{{2}, {}, {}}] = image.decompressJPG(video['y'][start_ind + f]:byte())
+                    
                     local mm = minmaxes[start_ind + f]
                     im[{{1}, {}, {}}] = im[{{1}, {}, {}}] * (mm[2] - mm[1]) + mm[1]
                     im[{{2}, {}, {}}] = im[{{2}, {}, {}}] * (mm[4] - mm[3]) + mm[3]
-                    im[{{3}, {}, {}}] = torch.sqrt(torch.pow(im[{{1}, {}, {}}], 2) +  torch.pow(im[{{2}, {}, {}}], 2))
+                    im[{{3}, {}, {}}] = torch.sqrt(torch.pow(im[{{1}, {}, {}}], 2) + torch.pow(im[{{2}, {}, {}}], 2))
 
                     im[{{1}, {}, {}}] = im[{{1}, {}, {}}] - im[{{1}, {}, {}}]:mean()
                     im[{{2}, {}, {}}] = im[{{2}, {}, {}}] - im[{{2}, {}, {}}]:mean()
