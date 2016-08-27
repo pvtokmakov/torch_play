@@ -14,10 +14,10 @@ cutorch.setDevice(params.gpu + 1)
 local function cropImage(im, batch, frame_ind)
     local size = im:size()
     local out_dim = 227
-    local copy_x = math.min(227, size[2]) - 1
-    local copy_y = math.min(227, size[1]) - 1
+    local copy_x = math.min(227, size[3]) - 1
+    local copy_y = math.min(227, size[2]) - 1
 
-    local croped_im = torch.zeros(out_dim, out_dim)
+    local croped_im = torch.zeros(3, out_dim, out_dim)
     print(croped_im:narrow(1, 1, copy_y):narrow(2, 1, copy_x):size())
     print(image.crop(im, 0, 0, copy_y, copy_x):size())
     croped_im:narrow(1, 1, copy_y):narrow(2, 1, copy_x):copy(image.crop(im, 0, 0, copy_y, copy_x))
