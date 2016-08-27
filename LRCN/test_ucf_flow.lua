@@ -18,9 +18,9 @@ local function cropImage(im, batch, frame_ind)
     local copy_y = math.min(227, size[2]) - 1
 
     local croped_im = torch.zeros(3, out_dim, out_dim)
-    print(croped_im:narrow(1, 1, copy_y):narrow(2, 1, copy_x):size())
+    print(croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):size())
     print(image.crop(im, 0, 0, copy_y, copy_x):size())
-    croped_im:narrow(1, 1, copy_y):narrow(2, 1, copy_x):copy(image.crop(im, 0, 0, copy_y, copy_x))
+    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, 0, 0, copy_y, copy_x))
     batch[{{frame_ind + 1}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
     batch[{{frame_ind + 2}, {}, {}, {}}] = croped_im
