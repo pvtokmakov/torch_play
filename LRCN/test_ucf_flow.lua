@@ -18,22 +18,22 @@ local function cropImage(im, batch, frame_ind)
     local copy_y = math.min(227, size[2])
 
     local croped_im = torch.zeros(3, out_dim, out_dim)
-    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, 0, 0, copy_y, copy_x))
+    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, 0, 0, copy_x, copy_y))
     batch[{{frame_ind + 1}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
     batch[{{frame_ind + 2}, {}, {}, {}}] = croped_im
     croped_im = torch.zeros(3, out_dim, out_dim)
-    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, size[3] - out_dim, 0, size[3], out_dim))
+    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, size[3] - copy_x, 0, size[3], copy_y))
     batch[{{frame_ind + 3}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
     batch[{{frame_ind + 4}, {}, {}, {}}] = croped_im
     croped_im = torch.zeros(3, out_dim, out_dim)
-    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, 0, size[2] - out_dim, out_dim, size[2]))
+    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, 0, size[2] - copy_y, copy_x, size[2]))
     batch[{{frame_ind + 5}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
     batch[{{frame_ind + 6}, {}, {}, {}}] = croped_im
     croped_im = torch.zeros(3, out_dim, out_dim)
-    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, size[3] - out_dim, size[2] - out_dim, size[3], size[2]))
+    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, size[3] - copy_x, size[2] - copy_y, size[3], size[2]))
     batch[{{frame_ind + 7}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
     batch[{{frame_ind + 8}, {}, {}, {}}] = croped_im
@@ -41,7 +41,7 @@ local function cropImage(im, batch, frame_ind)
     local mid_x = math.floor(size[3] / 2)
     local mid_y = math.floor(size[2] / 2)
     croped_im = torch.zeros(3, out_dim, out_dim)
-    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, mid_x - out_dim / 2, mid_y - out_dim / 2, mid_x + out_dim / 2, mid_y + out_dim / 2))
+    croped_im:narrow(2, 1, copy_y):narrow(3, 1, copy_x):copy(image.crop(im, mid_x - copy_x / 2, mid_y - copy_y / 2, mid_x + copy_x / 2, mid_y + copy_y / 2))
     batch[{{frame_ind + 9}, {}, {}, {}}] = croped_im
     croped_im = image.hflip(croped_im)
     batch[{{frame_ind + 10}, {}, {}, {}}] = croped_im
